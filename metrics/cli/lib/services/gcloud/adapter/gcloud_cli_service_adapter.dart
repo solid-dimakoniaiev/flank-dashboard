@@ -2,6 +2,7 @@
 // that can be found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cli/prompter/prompter.dart';
 import 'package:cli/services/gcloud/cli/gcloud_cli.dart';
@@ -66,7 +67,7 @@ class GCloudCliServiceAdapter implements GCloudService {
   }
 
   @override
-  Future<void> version() {
+  Future<ProcessResult> version() {
     return _gcloudCli.version();
   }
 
