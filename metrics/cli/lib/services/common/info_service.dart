@@ -6,6 +6,6 @@ import 'dart:io';
 /// A base class for info services that provides common methods
 /// for getting information about service.
 abstract class InfoService {
-  /// Shows the version information of this service.
+  /// Returns the [ProcessResult] with the version information of this service.
   Future<ProcessResult> version();
 }
