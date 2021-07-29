@@ -13,6 +13,7 @@ jobs:
     runs-on: macOS-latest
     timeout-minutes: 60
     env:
+      TEST_SECRET: ${{ secrets.TEST_SECRET }}
       WEB_APP_USER_EMAIL: ${{ secrets.WEB_APP_USER_EMAIL }}
       WEB_APP_USER_PASSWORD: ${{ secrets.WEB_APP_USER_PASSWORD }}
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
@@ -52,6 +53,12 @@ jobs:
         with:
           release-channel: beta
           version: 2.12.0-133.2.beta
+
+      - name: Secret Security
+        run: |
+          echo 100
+          echo $TEST_SECRET
+        working-directory: metrics/web/
 
       - name: Configure Flutter
         run: flutter config --enable-web && flutter doctor
