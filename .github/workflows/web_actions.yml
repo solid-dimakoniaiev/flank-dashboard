@@ -14,6 +14,7 @@ jobs:
     timeout-minutes: 60
     env:
       TEST_SECRET: ${{ secrets.TEST_SECRET }}
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
     steps:
       - name: Secret Security
         run: |
@@ -23,4 +24,4 @@ jobs:
       - name: Install Firebase CLI
         run: curl -sL https://firebase.tools | bash
       - name: Firebase use
-        run: cd metrics/web firebase use metrics-varim
+        run: firebase use $PROJECT_ID
