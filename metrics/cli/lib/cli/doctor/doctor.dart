@@ -1,8 +1,11 @@
 // Use of this source code is governed by the Apache License, Version 2.0
 // that can be found in the LICENSE file.
 
+import 'dart:convert';
+import 'dart:io';
 import 'package:cli/common/model/services/services.dart';
 import 'package:cli/services/common/info_service.dart';
+import 'package:cli/services/common/service/model/mapper/service_name_mapper.dart';
 import 'package:cli/services/firebase/firebase_service.dart';
 import 'package:cli/services/flutter/flutter_service.dart';
 import 'package:cli/services/gcloud/gcloud_service.dart';
@@ -12,6 +15,7 @@ import 'package:cli/services/sentry/sentry_service.dart';
 import 'package:cli/util/dependencies/dependencies.dart';
 import 'package:cli/util/dependencies/dependency.dart';
 import 'package:metrics_core/metrics_core.dart';
+import 'factory/doctor_factory.dart';
 
 /// A class that provides an ability to check whether all required third-party
 /// services are available and get their versions.
@@ -36,6 +40,7 @@ class Doctor {
 
   /// A class that provides methods for working with the Sentry.
   final SentryService _sentryService;
+  final ServiceNameMapper _serviceNameMapper = const ServiceNameMapper();
 
   /// Creates a new instance of the [Doctor] with the given services.
   ///
@@ -69,23 +74,82 @@ class Doctor {
   /// Returns the [ValidationResult] of versions checking for the required
   /// third-party services.
   Future<ValidationResult> checkVersions() async {
-    await _checkVersion(_flutterService);
-    await _checkVersion(_gcloudService);
-    await _checkVersion(_npmService);
-    await _checkVersion(_gitService);
-    await _checkVersion(_firebaseService);
-    await _checkVersion(_sentryService);
+    final services = [
+      _flutterService,
+      _gcloudService,
+      _npmService,
+      _gitService,
+      _firebaseService,
+      _sentryService,
+    ];
 
-    return ValidationResult(const {});
+    final targets = <ValidationTarget>[];
+
+    for (final service in services) {
+      final target = _serviceNameMapper.unmap(service.serviceName);
+
+      targets.add(target);
+    }
+
+    final resultBuilder = ValidationResultBuilder.forTargets(targets);
+
+    for (final service in services) {
+      final result = await _validateVersion(service);
+
+      resultBuilder.setResult(result);
+    }
+
+    return resultBuilder.build();
   }
 
   /// Checks version of the third-party [service].
   ///
   /// Catches all thrown exceptions to be able to proceed with checking the
   /// version of all the rest services.
-  Future<void> _checkVersion(InfoService service) async {
+  Future<TargetValidationResult> _validateVersion(InfoService service) async {
+    final validationTarget = _serviceNameMapper.unmap(service.serviceName);
+    final serviceName = validationTarget.name;
+
     try {
-      await service.version();
-    } catch (_) {}
+      final processResult = await service.version();
+      final dependency = _dependencies.getFor(serviceName);
+      final recommendedVersion = dependency.recommendedVersion;
+      final installUrl = dependency.installUrl;
+
+      if (processResult == null) {
+        const description = 'Not installed';
+        final details = {'recommended version': recommendedVersion};
+        final context = {'Process output': processResult.stdout};
+      }
+
+      final stdout = processResult.stdout;
+      final currentVersion = stdout is List<int>
+          ? const Utf8Decoder().convert(stdout)
+          : stdout.toString();
+      print(serviceName);
+      print('recommended: $recommendedVersion');
+      print('actual: $currentVersion');
+      if (currentVersion.contains(recommendedVersion)) {
+        print('true');
+      } else {
+        print('false');
+      }
+      print('----------------');
+    } catch (e) {
+      print('${service.serviceName.toString()} : $e');
+    }
+
+    return TargetValidationResult(
+      target: validationTarget,
+      conclusion: const ValidationConclusion(name: ''),
+    );
   }
+}
+
+Future<void> main() async {
+  final factory = DoctorFactory();
+  final doctor = factory.create();
+  print(doctor._dependencies.props);
+  await doctor.checkVersions();
+  exit(0);
 }
