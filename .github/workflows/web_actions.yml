@@ -20,3 +20,8 @@ jobs:
           echo 100
           echo $TEST_SECRET
           echo 200
+      - name: Install Firebase CLI
+        run: curl -sL https://firebase.tools | bash
+      - name: Firebase use
+        run: firebase use metrics-varim
+        working-directory: metrics/web/
