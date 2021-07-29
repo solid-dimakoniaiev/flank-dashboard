@@ -16,10 +16,11 @@ jobs:
       TEST_SECRET: ${{ secrets.TEST_SECRET }}
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
     steps:
+      - uses: actions/checkout@v2
       - name: Secret Security
         run: |
           echo 100
-          echo $TEST_SECRET
+          cd metrics/web
           echo 200
       - name: Install Firebase CLI
         run: curl -sL https://firebase.tools | bash
