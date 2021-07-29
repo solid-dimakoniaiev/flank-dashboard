@@ -1,4 +1,4 @@
-# Metrics Web Application :tada:
+# Metrics Web Application :tada: :testy:
 
 The Flutter web application that displays project metrics on easy to navigate Dashboard.
 
