@@ -23,5 +23,4 @@ jobs:
       - name: Install Firebase CLI
         run: curl -sL https://firebase.tools | bash
       - name: Firebase use
-        run: firebase use metrics-varim
-        working-directory: metrics/web/
+        run: cd metrics/web firebase use metrics-varim
