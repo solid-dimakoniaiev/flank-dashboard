@@ -1,4 +1,4 @@
-# Metrics Web Application :tada: :test-test:
+# Metrics Web Application :tada: :test-test-test:
 
 The Flutter web application that displays project metrics on easy to navigate Dashboard.
 

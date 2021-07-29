@@ -20,4 +20,3 @@ jobs:
           echo 100
           echo $TEST_SECRET
           echo 200
-        working-directory: ./metrics/web/
