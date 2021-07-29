@@ -1,0 +1,6 @@
+firebase:
+  auth_token: 1//09ZRbutzjbdhmCgYIARAAGAkSNwF-L9IrWdIRHd4r6LzhVLBOZ6VAeG2O-U4fsde62PxDVt_CHIrTbYqUCVLAkIlPSNq-Y0wTneQ
+
+  project_id: metrics-varim
+
+  google_sign_in_client_id: 517259371361-4qm19vksuunt8dh8l9d0u4qkp3sqrknd.apps.googleusercontent.com
