@@ -3,9 +3,14 @@
 
 import 'dart:io';
 
+import 'package:cli/services/common/service/model/service_name.dart';
+
 /// A base class for info services that provides common methods
 /// for getting information about service.
 abstract class InfoService {
+  /// A [ServiceName] that represents the name of this service.
+  ServiceName get serviceName;
+
   /// Returns the [ProcessResult] with the version information of this service.
   Future<ProcessResult> version();
 }
