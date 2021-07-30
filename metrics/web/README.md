@@ -1,4 +1,4 @@
-# Metrics Web Application :tada: :test-cd-check:
+# Metrics Web Application :tada: :test-cd-check-test:
 
 The Flutter web application that displays project metrics on easy to navigate Dashboard.
 

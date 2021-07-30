@@ -1,0 +1,10 @@
+firebase:
+  auth_token: $FIREBASE_AUTH_TOKEN
+  project_id: $PROJECT_ID
+  google_sign_in_client_id: $GOOGLE_SIGN_IN_CLIENT_ID
+sentry:
+  auth_token: $SENTRY_AUTH_TOKEN
+  organization_slug: $ORGANIZATION_SLUG
+  project_slug: $PROJECT_SLUG
+  project_dsn: $PROJECT_DSN
+  release_name: $RELEASE_NAME
