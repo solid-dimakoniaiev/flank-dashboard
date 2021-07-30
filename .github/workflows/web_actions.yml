@@ -23,15 +23,19 @@ jobs:
           chmod a+x metrics_cli
       - name: Apply environment variables
         env:
-          FIREBASE_AUTH_TOKEN: ${{ secrets.FIREBASE_AUTH_TOKEN }}
+          FIREBASE_AUTH_TOKEN: auth_token
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
           GOOGLE_SIGN_IN_CLIENT_ID: ${{ secrets.GOOGLE_SIGN_IN_CLIENT_ID }}
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_AUTH_TOKEN: auth_token
           ORGANIZATION_SLUG: ${{ secrets.ORGANIZATION_SLUG }}
           PROJECT_SLUG: ${{ secrets.PROJECT_SLUG }}
           PROJECT_DSN: ${{ secrets.PROJECT_DSN }}
           RELEASE_NAME: ${{ secrets.RELEASE_NAME }}
-        run: eval "echo \"$(sed 's/"/\\"/g' update_config.yml)\"" >> update.yml
+        run: |
+          eval "echo \"$(sed 's/"/\\"/g' update_config.yml)\"" >> update.yml
+          echo 100
+          cat update.yml
+          echo 200
         working-directory: .metrics/
       - name: Coverage Converter build data sync
         run: ./metrics_cli update --config-file=".metrics/update.yml"
