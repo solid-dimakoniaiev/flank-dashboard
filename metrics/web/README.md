@@ -1,4 +1,4 @@
-# Metrics Web Application :tada: :check-cat-cat-2t:
+# Metrics Web Application :tada: :checkdata-cat-cat-2t:
 
 The Flutter web application that displays project metrics on easy to navigate Dashboard.
 
