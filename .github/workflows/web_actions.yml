@@ -32,6 +32,7 @@ jobs:
           PROJECT_DSN: ${{ secrets.PROJECT_DSN }}
           RELEASE_NAME: ${{ secrets.RELEASE_NAME }}
         run: |
+          echo $PROJECT_ID
           eval "echo \"$(sed 's/"/\\"/g' update_config.yml)\"" >> update.yml
           echo 100
           cat update.yml
