@@ -34,4 +34,4 @@ jobs:
         run: eval "echo \"$(sed 's/"/\\"/g' update_config.yml)\"" >> update.yml
         working-directory: .metrics/
       - name: Coverage Converter build data sync
-        run: ./metrics_cli update --config-file .metrics/update.yml
+        run: ./metrics_cli update --config-file=".metrics/update.yml"
